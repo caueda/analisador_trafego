@@ -14,7 +14,7 @@ exemplo Scapy em Python).
 protocolo, tamanho do pacote.
 
 ### Análise de Tráfego
-- Calcule e exiba estatísticas básicas sobre o tráfego capturado, incluindo:
+#### Calcule e exiba estatísticas básicas sobre o tráfego capturado, incluindo:
 - Número total de pacotes capturados.
 -  Número de pacotes por protocolo (por exemplo, TCP, UDP).
 - Top 5 endereços IP de origem com mais tráfego.
@@ -27,6 +27,8 @@ protocolo, tamanho do pacote.
 ## Como executar
 
 ### Windows
+#### Requisitos
+Instalar o Ncap.
 ```bash
 python analisador_trafego.py <Interface de Rede>
 ```
@@ -44,5 +46,9 @@ Exemplo:
 sudo python3 analisador_trafego.py eth0
 ```
 
+## Criando a imagem para Docker
+docker build --pull --rm -f "Dockerfile" -t analisetrafegorede:latest "." 
 ## Rodando o container Docker
+```bash
 docker run --network=host -t -a stdout -a stderr <image_id>
+```
