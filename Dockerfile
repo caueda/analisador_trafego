@@ -10,5 +10,8 @@ ADD . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Set PYTHONUNBUFFERED environment variable
+ENV PYTHONUNBUFFERED 1
+
 # Run analisador_trafego.py when the container launches
-CMD ["python", "analisador_trafego.py"]
+CMD ["python", "analisador_trafego.py", "eth0"]

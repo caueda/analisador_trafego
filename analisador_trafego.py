@@ -1,5 +1,13 @@
 from scapy.all import *
 from collections import Counter
+import argparse
+
+# Dicionário para mapear números de protocolos para nomes
+protocol_names = {
+    1: "ICMP",
+    6: "TCP",
+    17: "UDP"
+}
 
 def capturar_pacotes(interface, contagem=100):
     pacotes = sniff(iface=interface, count=contagem)
@@ -44,7 +52,7 @@ def analisar_trafego(pacotes):
     print("Número de protocolos diferentes:", num_protocolos)
     print("Número de pacotes por protocolo:")
     for protocolo, contagem in protocolos.items():
-        print(f"  Protocolo {protocolo}: {contagem} pacotes")
+        print(f"  Protocolo {protocol_names[protocolo]}: {contagem} pacotes")
     print("Top 5 endereços IP de origem com mais tráfego:")
     for endereco, contagem in top_enderecos_origem:
         print(f"  {endereco}: {contagem} pacotes")
@@ -52,8 +60,18 @@ def analisar_trafego(pacotes):
     for endereco, contagem in top_enderecos_destino:
         print(f"  {endereco}: {contagem} pacotes")
 
+    return {
+        "total_pacotes": total_pacotes,
+        "num_protocolos": num_protocolos,
+        "protocolos": protocolos,
+        "top_enderecos_origem": top_enderecos_origem,
+        "top_enderecos_destino": top_enderecos_destino
+    }
+
 # Exemplo de uso
 if __name__ == "__main__":
-    interface = "en0"  # Substitua pela sua interface de rede
-    pacotes = capturar_pacotes(interface)
+    parser = argparse.ArgumentParser(description="Analisador de tráfego de rede")
+    parser.add_argument("interface", type=str, help="Interface de rede para captura de pacotes")
+    args = parser.parse_args()
+    pacotes = capturar_pacotes(args.interface)
     analisar_trafego(pacotes)
