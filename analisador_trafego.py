@@ -15,7 +15,7 @@ def capturar_pacotes(interface, contagem=100):
     pacotes = sniff(iface=interface, count=contagem)
     return pacotes
 
-def generate_traffic_stats(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names):
+def gerar_statistica_trafego(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names):
     result = []
     result.append("Estatísticas de Tráfego:")
     result.append(f"Número total de pacotes capturados: {total_pacotes}")
@@ -65,7 +65,7 @@ def analisar_trafego(pacotes):
     top_enderecos_destino = Counter(enderecos_destino).most_common(5)
 
     # Exibindo estatísticas
-    return generate_traffic_stats(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names)
+    return gerar_statistica_trafego(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names)
 
 # Main
 if __name__ == "__main__":
