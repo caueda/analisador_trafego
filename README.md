@@ -43,3 +43,6 @@ Exemplo:
 ```bash
 sudo python3 analisador_trafego.py eth0
 ```
+
+## Rodando o container Docker
+docker run -t -a stdout -a stderr <image_id>

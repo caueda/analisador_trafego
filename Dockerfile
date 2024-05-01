@@ -1,11 +1,5 @@
-# Use an official Python runtime as a parent image
+# Imagem oficial do Python 3.8
 FROM python:3.8-slim-buster
-
-#Install ping
-RUN apt-get update && apt-get install -y iputils-ping
-
-#Install ifconfig
-RUN apt-get update && apt-get install -y net-tools
 
 # Set the working directory in the container to /app
 WORKDIR /app
