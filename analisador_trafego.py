@@ -67,16 +67,19 @@ def analisar_trafego(pacotes):
     # Exibindo estatísticas
     return generate_traffic_stats(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names)
 
-# Exemplo de uso
+# Main
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analisador de tráfego de rede")
     parser.add_argument("interface", type=str, help="Interface de rede para captura de pacotes")
     args = parser.parse_args()
     while True:
         try:
-            print(f"\nAnálise de tráfego. Interface de Rede {args.interface}: Início da coleta de pacotes {datetime.datetime.now()}")
+            print("---------------------------------------------------------------------------------------------------")
+            print(f"Análise de tráfego. Interface de Rede {args.interface}: Início da coleta de pacotes {datetime.datetime.now()}")
+            print("---------------------------------------------------------------------------------------------------")
             pacotes = capturar_pacotes(args.interface)
             print(analisar_trafego(pacotes))
+            print("\n")
             time.sleep(5)
         except KeyboardInterrupt:
             print("\nEncerrando a coleta de pacotes")
