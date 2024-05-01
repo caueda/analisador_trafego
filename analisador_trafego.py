@@ -1,4 +1,5 @@
 from scapy.all import *
+from collections import Counter
 
 def capturar_pacotes(interface, contagem=100):
     pacotes = sniff(iface=interface, count=contagem)
@@ -14,21 +15,23 @@ def analisar_trafego(pacotes):
     enderecos_destino = []
 
     for pacote in pacotes:
-        # Capturando os campos dos pacotes
-        ip_origem = pacote[IP].src
-        ip_destino = pacote[IP].dst
-        protocolo = pacote[IP].proto
-        tamanho = len(pacote)
+        # Verifica se o pacote contém a camada IP
+        if IP in pacote:
+            # Capturando os campos dos pacotes
+            ip_origem = pacote[IP].src
+            ip_destino = pacote[IP].dst
+            protocolo = pacote[IP].proto
+            tamanho = len(pacote)
 
-        # Contagem de protocolos
-        if protocolo in protocolos:
-            protocolos[protocolo] += 1
-        else:
-            protocolos[protocolo] = 1
+            # Contagem de protocolos
+            if protocolo in protocolos:
+                protocolos[protocolo] += 1
+            else:
+                protocolos[protocolo] = 1
 
-        # Armazenando endereços IP
-        enderecos_origem.append(ip_origem)
-        enderecos_destino.append(ip_destino)
+            # Armazenando endereços IP
+            enderecos_origem.append(ip_origem)
+            enderecos_destino.append(ip_destino)
 
     # Calculando as estatísticas
     num_protocolos = len(protocolos)
@@ -51,6 +54,6 @@ def analisar_trafego(pacotes):
 
 # Exemplo de uso
 if __name__ == "__main__":
-    interface = "inet"  # Substitua pela sua interface de rede
+    interface = "en0"  # Substitua pela sua interface de rede
     pacotes = capturar_pacotes(interface)
     analisar_trafego(pacotes)
