@@ -1,6 +1,12 @@
 # Use an official Python runtime as a parent image
 FROM python:3.8-slim-buster
 
+#Install ping
+RUN apt-get update && apt-get install -y iputils-ping
+
+#Install ifconfig
+RUN apt-get update && apt-get install -y net-tools
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
@@ -9,9 +15,6 @@ ADD . /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Set PYTHONUNBUFFERED environment variable
-ENV PYTHONUNBUFFERED 1
 
 # Run analisador_trafego.py when the container launches
 CMD ["python", "analisador_trafego.py", "eth0"]

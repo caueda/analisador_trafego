@@ -1,6 +1,8 @@
 from scapy.all import *
 from collections import Counter
 import argparse
+import time
+import datetime
 
 # Dicionário para mapear números de protocolos para nomes
 protocol_names = {
@@ -12,6 +14,22 @@ protocol_names = {
 def capturar_pacotes(interface, contagem=100):
     pacotes = sniff(iface=interface, count=contagem)
     return pacotes
+
+def generate_traffic_stats(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names):
+    result = []
+    result.append("Estatísticas de Tráfego:")
+    result.append(f"Número total de pacotes capturados: {total_pacotes}")
+    result.append(f"Número de protocolos diferentes: {num_protocolos}")
+    result.append("Número de pacotes por protocolo:")
+    for protocolo, contagem in protocolos.items():
+        result.append(f"  Protocolo {protocol_names[protocolo]}: {contagem} pacotes")
+    result.append("Top 5 endereços IP de origem com mais tráfego:")
+    for endereco, contagem in top_enderecos_origem:
+        result.append(f"  {endereco}: {contagem} pacotes")
+    result.append("Top 5 endereços IP de destino com mais tráfego:")
+    for endereco, contagem in top_enderecos_destino:
+        result.append(f"  {endereco}: {contagem} pacotes")
+    return "\n".join(result)
 
 def analisar_trafego(pacotes):
     total_pacotes = len(pacotes)
@@ -47,31 +65,15 @@ def analisar_trafego(pacotes):
     top_enderecos_destino = Counter(enderecos_destino).most_common(5)
 
     # Exibindo estatísticas
-    print("Estatísticas de Tráfego:")
-    print("Número total de pacotes capturados:", total_pacotes)
-    print("Número de protocolos diferentes:", num_protocolos)
-    print("Número de pacotes por protocolo:")
-    for protocolo, contagem in protocolos.items():
-        print(f"  Protocolo {protocol_names[protocolo]}: {contagem} pacotes")
-    print("Top 5 endereços IP de origem com mais tráfego:")
-    for endereco, contagem in top_enderecos_origem:
-        print(f"  {endereco}: {contagem} pacotes")
-    print("Top 5 endereços IP de destino com mais tráfego:")
-    for endereco, contagem in top_enderecos_destino:
-        print(f"  {endereco}: {contagem} pacotes")
-
-    return {
-        "total_pacotes": total_pacotes,
-        "num_protocolos": num_protocolos,
-        "protocolos": protocolos,
-        "top_enderecos_origem": top_enderecos_origem,
-        "top_enderecos_destino": top_enderecos_destino
-    }
+    return generate_traffic_stats(total_pacotes, num_protocolos, protocolos, top_enderecos_origem, top_enderecos_destino, protocol_names)
 
 # Exemplo de uso
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analisador de tráfego de rede")
     parser.add_argument("interface", type=str, help="Interface de rede para captura de pacotes")
     args = parser.parse_args()
-    pacotes = capturar_pacotes(args.interface)
-    analisar_trafego(pacotes)
+    while True:
+        print(f"\nAnálise de tráfego em {args.interface} em {datetime.datetime.now()}")
+        pacotes = capturar_pacotes(args.interface)
+        print(analisar_trafego(pacotes))
+        time.sleep(5)
