@@ -73,7 +73,13 @@ if __name__ == "__main__":
     parser.add_argument("interface", type=str, help="Interface de rede para captura de pacotes")
     args = parser.parse_args()
     while True:
-        print(f"\nAnálise de tráfego em {args.interface} em {datetime.datetime.now()}")
-        pacotes = capturar_pacotes(args.interface)
-        print(analisar_trafego(pacotes))
-        time.sleep(5)
+        try:
+            print(f"\nAnálise de tráfego. Interface de Rede {args.interface}: Início da coleta de pacotes {datetime.datetime.now()}")
+            pacotes = capturar_pacotes(args.interface)
+            print(analisar_trafego(pacotes))
+            time.sleep(5)
+        except KeyboardInterrupt:
+            print("\nEncerrando a coleta de pacotes")
+            break
+        except Exception as e:
+            print(f"Falha na coleta dos pacotes: {e}. Tentando novamente...")
