@@ -1,6 +1,9 @@
 # Imagem oficial do Python 3.8
 FROM python:3.8-slim-buster
 
+#Instalar curl
+RUN apt-get update && apt-get install -y curl
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
