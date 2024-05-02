@@ -4,6 +4,9 @@ FROM python:3.8-slim-buster
 #Instalar curl
 RUN apt-get update && apt-get install -y curl
 
+#Instalar ifconfig
+RUN apt-get install -y net-tools
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
